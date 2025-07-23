@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy to Vercel
 
 on:
   push:
@@ -7,11 +7,11 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout
+    - name: Checkout code
       uses: actions/checkout@v4
       
     - name: Setup Node.js
@@ -23,17 +23,14 @@ jobs:
     - name: Install dependencies
       run: npm ci
       
-    - name: Build
+    - name: Run type check
       run: npm run build
-      env:
-        ELEVENLABS_API_KEY_GABRIEL: ${{ secrets.ELEVENLABS_API_KEY_GABRIEL }}
-        ELEVENLABS_API_KEY_DAMIEN: ${{ secrets.ELEVENLABS_API_KEY_DAMIEN }}
-        ELEVENLABS_API_KEY_ALEX: ${{ secrets.ELEVENLABS_API_KEY_ALEX }}
-        GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
       
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      if: github.ref == 'refs/heads/main'
+    - name: Deploy to Vercel
+      uses: amondnet/vercel-action@v25
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./out
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        vercel-org-id: ${{ secrets.ORG_ID }}
+        vercel-project-id: ${{ secrets.PROJECT_ID }}
+        vercel-args: '--prod'
+      if: github.ref == 'refs/heads/main'

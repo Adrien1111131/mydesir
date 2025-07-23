@@ -5,11 +5,13 @@ Une application web moderne de génération d'histoires érotiques personnalisé
 ## ✨ Fonctionnalités
 
 - **Sélection de voix** : 6 personnages avec voix uniques (3 hommes, 3 femmes)
+- **Voix masculines prioritaires** : Affichage par défaut des voix masculines avec fichiers audio personnalisés
 - **Génération d'histoires** : IA Grok pour créer des histoires personnalisées
 - **Synthèse vocale** : ElevenLabs pour convertir les histoires en audio
-- **Interface moderne** : Design élégant avec Tailwind CSS
+- **Interface moderne** : Design élégant avec Tailwind CSS et animations fluides
 - **Expérience immersive** : Images aléatoires et lecteur audio intégré
 - **Écran de chargement** : Barre de progression avec messages motivants
+- **Voix féminines** : Temporairement désactivées avec message "Bientôt disponible"
 
 ## 🛠️ Technologies
 
@@ -54,6 +56,20 @@ pnpm dev
 ```
 
 L'application sera accessible sur [http://localhost:3000](http://localhost:3000)
+
+## 🔧 Configuration avancée
+
+### Fichiers audio personnalisés
+Les voix masculines utilisent des fichiers audio personnalisés stockés dans `public/voices/` :
+- `alex.mp3` - Voix d'Alex
+- `damien.mp3` - Voix de Damien  
+- `gabriel.mp3` - Voix de Gabriel
+
+### Variables d'environnement
+Copiez `.env.example` vers `.env.local` et configurez vos clés API :
+```bash
+cp .env.example .env.local
+```
 
 ## 📦 Déploiement sur Vercel
 
