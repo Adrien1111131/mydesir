@@ -1,0 +1,17 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "functions": {
+    "app/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
+  "env": {
+    "ELEVENLABS_API_KEY_GABRIEL": "@elevenlabs-api-key-gabriel",
+    "ELEVENLABS_API_KEY_DAMIEN": "@elevenlabs-api-key-damien", 
+    "ELEVENLABS_API_KEY_ALEX": "@elevenlabs-api-key-alex",
+    "GROK_API_KEY": "@grok-api-key"
+  }
+}
