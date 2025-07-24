@@ -10,6 +10,13 @@ import { Play, Pause, Volume2, UserIcon as Female, UserIcon as Male, ArrowLeft }
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 
 interface Voice {
@@ -109,6 +116,35 @@ const availableImages = [
   "shutterstock_1326604619.jpg"
 ]
 
+// Scénarios prédéfinis pour l'inspiration
+const predefinedScenarios = [
+  {
+    id: "custom",
+    title: "Personnalisé",
+    description: ""
+  },
+  {
+    id: "library",
+    title: "Rencontre inattendue dans une bibliothèque ancienne",
+    description: "Dans une vieille bibliothèque aux étagères remplies de livres poussiéreux, deux inconnus se croisent dans une aile isolée, leurs doigts effleurant le même ouvrage rare. L'atmosphère feutrée, l'odeur du cuir et du papier ancien, et le silence oppressant amplifient la tension palpable entre eux. Écrivez une histoire où leur curiosité mutuelle pour la littérature se transforme en une danse subtile de séduction, où chaque mot chuchoté et chaque regard prolongé devient une promesse d'intimité."
+  },
+  {
+    id: "masquerade",
+    title: "Soirée masquée dans un manoir mystérieux",
+    description: "Lors d'un bal masqué dans un manoir opulent, une femme portant un masque orné de plumes rencontre un homme dont le regard perçant la trouble immédiatement. Ils dansent, leurs corps se frôlant à chaque pas, tandis que l'anonymat des masques libère leurs inhibitions. Écrivez une histoire où leur jeu de séduction s'intensifie dans les couloirs sombres du manoir, chaque échange verbal et chaque toucher voilé révélant des désirs inavoués."
+  },
+  {
+    id: "desert",
+    title: "Voyage sensuel sous les étoiles dans le désert",
+    description: "Deux voyageurs se retrouvent seuls sous un ciel étoilé dans un campement isolé au cœur du désert. La chaleur du feu de camp contraste avec la fraîcheur de la nuit, et leurs conversations autour des flammes deviennent de plus en plus personnelles. Écrivez une histoire où l'isolement du désert et la beauté brute de la nature éveillent une connexion physique et émotionnelle, les poussant à explorer leurs désirs dans un moment suspendu hors du temps."
+  },
+  {
+    id: "artist",
+    title: "Atelier d'artiste sous une pluie d'orage",
+    description: "Un peintre invite un modèle dans son atelier un soir d'orage. La pluie tambourine sur les vitres, et la lumière tamisée des bougies éclaire leurs silhouettes. Alors que l'artiste guide le modèle pour une pose intime, leurs regards se croisent, et la tension créative se transforme en une attirance magnétique. Écrivez une histoire où chaque coup de pinceau, chaque ajustement de posture, devient une exploration sensuelle de leurs limites et de leurs désirs."
+  }
+]
+
 export default function HomePage() {
   const [currentStep, setCurrentStep] = useState(0) // 0: voice selection, 1: fantasy input, 2: final
   const [selectedVoice, setSelectedVoice] = useState<Voice | null>(null)
@@ -122,6 +158,7 @@ export default function HomePage() {
   const [userName, setUserName] = useState<string>("")
   const [eroticIntensity, setEroticIntensity] = useState<number>(50)
   const [storyDuration, setStoryDuration] = useState<number>(3)
+  const [selectedScenario, setSelectedScenario] = useState<string>("")
 
   // Audio player states
   const [isPlaying, setIsPlaying] = useState(false)
@@ -273,6 +310,15 @@ export default function HomePage() {
     handleVibrate()
     setSelectedVoice(voice)
     handleTransition(() => setCurrentStep(1))
+  }
+
+  // Fonction pour gérer le changement de scénario
+  const handleScenarioChange = (scenarioId: string) => {
+    setSelectedScenario(scenarioId)
+    const scenario = predefinedScenarios.find(s => s.id === scenarioId)
+    if (scenario) {
+      setFantasyDescription(scenario.description)
+    }
   }
 
   const handleGenerateStory = async () => {
@@ -538,6 +584,24 @@ export default function HomePage() {
         </div>
 
         <div className="grid w-full gap-2">
+          <Label htmlFor="scenario-select" className="text-xl font-semibold text-foreground text-left mb-2">
+            Inspirez-vous :
+          </Label>
+          <Select value={selectedScenario} onValueChange={handleScenarioChange}>
+            <SelectTrigger className="bg-muted text-foreground border-muted focus-visible:ring-primary p-4 rounded-lg text-lg">
+              <SelectValue placeholder="Choisissez un scénario..." />
+            </SelectTrigger>
+            <SelectContent>
+              {predefinedScenarios.map((scenario) => (
+                <SelectItem key={scenario.id} value={scenario.id}>
+                  {scenario.title}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="grid w-full gap-2">
           <Label htmlFor="fantasy-description" className="text-xl font-semibold text-foreground text-left mb-2">
             Mon fantasme en quelques mots :
           </Label>
@@ -732,6 +796,7 @@ export default function HomePage() {
               setSelectedVoice(null)
               setFantasyDescription("")
               setUserName("")
+              setSelectedScenario("")
             }}
           >
             Créer une nouvelle histoire
